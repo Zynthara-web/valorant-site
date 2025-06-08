@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Valorant Giriş</title>
   <style>
     body {
@@ -51,25 +51,80 @@
       font-size: 36px;
       color: #ff4655;
       display: none;
+      background-color: black;
+      padding: 20px;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .new-skin img {
+      margin-top: 20px;
+      width: 200px;
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
   <div class="box" id="loginBox">
     <h2>Giriş Yap</h2>
-    <input type="text" placeholder="Kullanıcı Adı">
-    <input type="password" placeholder="Şifre">
-    <button onclick="showNewSkin()">Devam</button>
+    <input type="email" id="email" placeholder="Email" />
+    <input type="password" id="password" placeholder="Şifre" />
+    <button onclick="login()">Giriş Yap</button>
+    <button onclick="register()">Kayıt Ol</button>
   </div>
 
   <div class="new-skin" id="newSkinText">
     New Skin
+    <br />
+    <img src="karambit.png" alt="Asil Karambit" />
   </div>
 
+  <!-- Firebase SDK'ları -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
   <script>
-    function showNewSkin() {
-      document.getElementById('loginBox').style.display = 'none';
-      document.getElementById('newSkinText').style.display = 'block';
+    const firebaseConfig = {
+      apiKey: "AIzaSyAW3-XwqK_-cMxptnY3d1XE2epvzKakuvM",
+      authDomain: "valorant-web-f1119.firebaseapp.com",
+      projectId: "valorant-web-f1119",
+      storageBucket: "valorant-web-f1119.appspot.com",
+      messagingSenderId: "996538527022",
+      appId: "1:996538527022:web:48c39451cafb78aa6a1ebf",
+      measurementId: "G-TV1C2LMR56"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    function register() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      if (!email || !password) {
+        alert("Email ve şifre gir!");
+        return;
+      }
+      auth
+        .createUserWithEmailAndPassword(email, password)
+        .then(() => alert("Kayıt başarılı! Giriş yapabilirsin."))
+        .catch((error) => alert(error.message));
+    }
+
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      if (!email || !password) {
+        alert("Email ve şifre gir!");
+        return;
+      }
+      auth
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          alert("Giriş başarılı!");
+          document.getElementById("loginBox").style.display = "none";
+          document.getElementById("newSkinText").style.display = "block";
+        })
+        .catch((error) => alert(error.message));
     }
   </script>
 </body>
